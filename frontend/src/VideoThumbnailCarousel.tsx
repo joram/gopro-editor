@@ -27,9 +27,7 @@ export default function VideoThumbnailCarousel() {
 
     return <>
         <button onClick={async () => {
-            
-                await importGoProFolder(dirHandle, newFileCallback)
-            })
+            await importGoProFolder(dirHandle, newFileCallback)
         }}>Import</button>
         <div className="thumbnail-carousel">
             <Draggable>

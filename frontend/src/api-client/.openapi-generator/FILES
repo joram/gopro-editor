@@ -1,0 +1,16 @@
+.gitignore
+.npmignore
+.openapi-generator-ignore
+api.ts
+base.ts
+common.ts
+configuration.ts
+docs/DefaultApi.md
+docs/HTTPValidationError.md
+docs/Project.md
+docs/Segment.md
+docs/ValidationError.md
+docs/ValidationErrorLocInner.md
+docs/Video.md
+git_push.sh
+index.ts
