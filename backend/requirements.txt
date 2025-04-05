@@ -1,0 +1,9 @@
+fastapi
+fastapi-cors
+pydantic
+uvicorn
+open-telemetry-kit
+git+https://github.com/urbste/py-gpmf-parser.git
+numpy
+ffmpeg-python
+sentry-sdk[fastapi]
