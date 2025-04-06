@@ -5,55 +5,60 @@ class ApiClient {
     _apiClient: DefaultApi | null = null;
 
     constructor() {
+        let baseURL = "http://localhost:8000";
+        // @ts-ignore
+        if (process.env.NODE_ENV === "production") {
+            baseURL = window.location.origin;
+        }
         const axiosClient = axios.default.create({
-            baseURL: "http://localhost:8000",
+            baseURL: baseURL,
             headers: {
                 "Content-Type": "application/json",
             },
         });
-        this._apiClient = new DefaultApi(undefined, "http://localhost:8000", axiosClient);
+        this._apiClient = new DefaultApi(undefined, baseURL, axiosClient);
     }
 
     getProjects() {
         if (!this._apiClient) {
             throw new Error("API client not initialized");
         }
-        return this._apiClient.getProjectsProjectsGet()
+        return this._apiClient.getProjectsApiProjectsGet()
     }
 
     getProject(projectSlug: string) {
         if (!this._apiClient) {
             throw new Error("API client not initialized");
         }
-        return this._apiClient.getProjectProjectProjectSlugGet(projectSlug);
+        return this._apiClient.getProjectApiProjectProjectSlugGet(projectSlug);
     }
 
     getVideos(projectSlug: string) {
         if (!this._apiClient) {
             throw new Error("API client not initialized");
         }
-        return this._apiClient.getVideosProjectProjectSlugVideosGet(projectSlug);
+        return this._apiClient.getVideosApiProjectProjectSlugVideosGet(projectSlug);
     }
 
     getVideo(projectSlug: string, videoSlug: string) {
         if (!this._apiClient) {
             throw new Error("API client not initialized");
         }
-        return this._apiClient.getVideoProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug);
+        return this._apiClient.getVideoApiProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug);
     }
 
     getSegments(projectSlug: string, videoSlug: string) {
         if (!this._apiClient) {
             throw new Error("API client not initialized");
         }
-        return this._apiClient.getVideoProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug);
+        return this._apiClient.getVideoApiProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug);
     }
 
     setSegments(projectSlug: string, videoSlug: string, segments: Array<Segment>) {
         if (!this._apiClient) {
             throw new Error("API client not initialized");
         }
-        return this._apiClient.setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug, videoSlug, segments);
+        return this._apiClient.setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug, videoSlug, segments);
     }
 }
 

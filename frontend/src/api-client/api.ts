@@ -39,6 +39,25 @@ export interface HTTPValidationError {
 /**
  * 
  * @export
+ * @interface InterestLevel
+ */
+export interface InterestLevel {
+    /**
+     * 
+     * @type {number}
+     * @memberof InterestLevel
+     */
+    'timestamp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof InterestLevel
+     */
+    'interest_level': number;
+}
+/**
+ * 
+ * @export
  * @interface Project
  */
 export interface Project {
@@ -123,6 +142,24 @@ export interface Video {
      * @type {string}
      * @memberof Video
      */
+    'project_dir_name': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Video
+     */
+    'length': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Video
+     */
+    'size_bytes': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Video
+     */
     'slug': string;
     /**
      * 
@@ -165,6 +202,30 @@ export interface Video {
      * @type {Array<Segment>}
      * @memberof Video
      */
+    'suggested_segments'?: Array<Segment> | null;
+    /**
+     * 
+     * @type {Array<InterestLevel>}
+     * @memberof Video
+     */
+    'interest_levels'?: Array<InterestLevel> | null;
+    /**
+     * 
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof Video
+     */
+    'accel'?: Array<{ [key: string]: any; }>;
+    /**
+     * 
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof Video
+     */
+    'gyro'?: Array<{ [key: string]: any; }>;
+    /**
+     * 
+     * @type {Array<Segment>}
+     * @memberof Video
+     */
     'segments'?: Array<Segment>;
 }
 
@@ -181,10 +242,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectProjectProjectSlugGet: async (projectSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProjectApiProjectProjectSlugGet: async (projectSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectSlug' is not null or undefined
-            assertParamExists('getProjectProjectProjectSlugGet', 'projectSlug', projectSlug)
-            const localVarPath = `/project/{project_slug}`
+            assertParamExists('getProjectApiProjectProjectSlugGet', 'projectSlug', projectSlug)
+            const localVarPath = `/api/project/{project_slug}`
                 .replace(`{${"project_slug"}}`, encodeURIComponent(String(projectSlug)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -214,8 +275,8 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectsProjectsGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/projects`;
+        getProjectsApiProjectsGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/projects`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -246,12 +307,50 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVideoProjectProjectSlugVideoVideoSlugGet: async (projectSlug: string, videoSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getVideoApiProjectProjectSlugVideoVideoSlugGet: async (projectSlug: string, videoSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectSlug' is not null or undefined
-            assertParamExists('getVideoProjectProjectSlugVideoVideoSlugGet', 'projectSlug', projectSlug)
+            assertParamExists('getVideoApiProjectProjectSlugVideoVideoSlugGet', 'projectSlug', projectSlug)
             // verify required parameter 'videoSlug' is not null or undefined
-            assertParamExists('getVideoProjectProjectSlugVideoVideoSlugGet', 'videoSlug', videoSlug)
-            const localVarPath = `/project/{project_slug}/video/{video_slug}`
+            assertParamExists('getVideoApiProjectProjectSlugVideoVideoSlugGet', 'videoSlug', videoSlug)
+            const localVarPath = `/api/project/{project_slug}/video/{video_slug}`
+                .replace(`{${"project_slug"}}`, encodeURIComponent(String(projectSlug)))
+                .replace(`{${"video_slug"}}`, encodeURIComponent(String(videoSlug)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Video Preview
+         * @param {string} projectSlug 
+         * @param {string} videoSlug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet: async (projectSlug: string, videoSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectSlug' is not null or undefined
+            assertParamExists('getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet', 'projectSlug', projectSlug)
+            // verify required parameter 'videoSlug' is not null or undefined
+            assertParamExists('getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet', 'videoSlug', videoSlug)
+            const localVarPath = `/api/project/{project_slug}/video/{video_slug}/preview`
                 .replace(`{${"project_slug"}}`, encodeURIComponent(String(projectSlug)))
                 .replace(`{${"video_slug"}}`, encodeURIComponent(String(videoSlug)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -284,12 +383,12 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet: async (projectSlug: string, videoSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet: async (projectSlug: string, videoSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectSlug' is not null or undefined
-            assertParamExists('getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet', 'projectSlug', projectSlug)
+            assertParamExists('getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet', 'projectSlug', projectSlug)
             // verify required parameter 'videoSlug' is not null or undefined
-            assertParamExists('getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet', 'videoSlug', videoSlug)
-            const localVarPath = `/project/{project_slug}/video/{video_slug}/segments`
+            assertParamExists('getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet', 'videoSlug', videoSlug)
+            const localVarPath = `/api/project/{project_slug}/video/{video_slug}/thumbnail`
                 .replace(`{${"project_slug"}}`, encodeURIComponent(String(projectSlug)))
                 .replace(`{${"video_slug"}}`, encodeURIComponent(String(videoSlug)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -321,11 +420,75 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVideosProjectProjectSlugVideosGet: async (projectSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getVideosApiProjectProjectSlugVideosGet: async (projectSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectSlug' is not null or undefined
-            assertParamExists('getVideosProjectProjectSlugVideosGet', 'projectSlug', projectSlug)
-            const localVarPath = `/project/{project_slug}/videos`
+            assertParamExists('getVideosApiProjectProjectSlugVideosGet', 'projectSlug', projectSlug)
+            const localVarPath = `/api/project/{project_slug}/videos`
                 .replace(`{${"project_slug"}}`, encodeURIComponent(String(projectSlug)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Root
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        rootGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Serve React App
+         * @param {string} filepath 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        serveReactAppFilepathGet: async (filepath: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filepath' is not null or undefined
+            assertParamExists('serveReactAppFilepathGet', 'filepath', filepath)
+            const localVarPath = `/{filepath}`
+                .replace(`{${"filepath"}}`, encodeURIComponent(String(filepath)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -357,14 +520,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost: async (projectSlug: string, videoSlug: string, segment: Array<Segment>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost: async (projectSlug: string, videoSlug: string, segment: Array<Segment>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectSlug' is not null or undefined
-            assertParamExists('setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost', 'projectSlug', projectSlug)
+            assertParamExists('setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost', 'projectSlug', projectSlug)
             // verify required parameter 'videoSlug' is not null or undefined
-            assertParamExists('setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost', 'videoSlug', videoSlug)
+            assertParamExists('setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost', 'videoSlug', videoSlug)
             // verify required parameter 'segment' is not null or undefined
-            assertParamExists('setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost', 'segment', segment)
-            const localVarPath = `/project/{project_slug}/video/{video_slug}/segments`
+            assertParamExists('setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost', 'segment', segment)
+            const localVarPath = `/api/project/{project_slug}/video/{video_slug}/segments`
                 .replace(`{${"project_slug"}}`, encodeURIComponent(String(projectSlug)))
                 .replace(`{${"video_slug"}}`, encodeURIComponent(String(videoSlug)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -409,10 +572,10 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProjectProjectProjectSlugGet(projectSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Project>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectProjectProjectSlugGet(projectSlug, options);
+        async getProjectApiProjectProjectSlugGet(projectSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Project>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectApiProjectProjectSlugGet(projectSlug, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getProjectProjectProjectSlugGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getProjectApiProjectProjectSlugGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -421,10 +584,10 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProjectsProjectsGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Project>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectsProjectsGet(options);
+        async getProjectsApiProjectsGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Project>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectsApiProjectsGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getProjectsProjectsGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getProjectsApiProjectsGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -435,10 +598,24 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getVideoProjectProjectSlugVideoVideoSlugGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Video>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getVideoProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug, options);
+        async getVideoApiProjectProjectSlugVideoVideoSlugGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Video>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getVideoApiProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getVideoProjectProjectSlugVideoVideoSlugGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getVideoApiProjectProjectSlugVideoVideoSlugGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get Video Preview
+         * @param {string} projectSlug 
+         * @param {string} videoSlug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet(projectSlug, videoSlug, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -449,10 +626,10 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Segment>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet(projectSlug, videoSlug, options);
+        async getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet(projectSlug, videoSlug, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -462,10 +639,35 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getVideosProjectProjectSlugVideosGet(projectSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Video>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getVideosProjectProjectSlugVideosGet(projectSlug, options);
+        async getVideosApiProjectProjectSlugVideosGet(projectSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Video>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getVideosApiProjectProjectSlugVideosGet(projectSlug, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getVideosProjectProjectSlugVideosGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getVideosApiProjectProjectSlugVideosGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Root
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async rootGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.rootGet(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.rootGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Serve React App
+         * @param {string} filepath 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async serveReactAppFilepathGet(filepath: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.serveReactAppFilepathGet(filepath, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.serveReactAppFilepathGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -477,10 +679,10 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug: string, videoSlug: string, segment: Array<Segment>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Video>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug, videoSlug, segment, options);
+        async setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug: string, videoSlug: string, segment: Array<Segment>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Video>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug, videoSlug, segment, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -500,8 +702,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectProjectProjectSlugGet(projectSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<Project> {
-            return localVarFp.getProjectProjectProjectSlugGet(projectSlug, options).then((request) => request(axios, basePath));
+        getProjectApiProjectProjectSlugGet(projectSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<Project> {
+            return localVarFp.getProjectApiProjectProjectSlugGet(projectSlug, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -509,8 +711,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectsProjectsGet(options?: RawAxiosRequestConfig): AxiosPromise<Array<Project>> {
-            return localVarFp.getProjectsProjectsGet(options).then((request) => request(axios, basePath));
+        getProjectsApiProjectsGet(options?: RawAxiosRequestConfig): AxiosPromise<Array<Project>> {
+            return localVarFp.getProjectsApiProjectsGet(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -520,8 +722,19 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVideoProjectProjectSlugVideoVideoSlugGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<Video> {
-            return localVarFp.getVideoProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug, options).then((request) => request(axios, basePath));
+        getVideoApiProjectProjectSlugVideoVideoSlugGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<Video> {
+            return localVarFp.getVideoApiProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Video Preview
+         * @param {string} projectSlug 
+         * @param {string} videoSlug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+            return localVarFp.getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet(projectSlug, videoSlug, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -531,8 +744,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<Segment>> {
-            return localVarFp.getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet(projectSlug, videoSlug, options).then((request) => request(axios, basePath));
+        getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+            return localVarFp.getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet(projectSlug, videoSlug, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -541,8 +754,27 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVideosProjectProjectSlugVideosGet(projectSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<Video>> {
-            return localVarFp.getVideosProjectProjectSlugVideosGet(projectSlug, options).then((request) => request(axios, basePath));
+        getVideosApiProjectProjectSlugVideosGet(projectSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<Video>> {
+            return localVarFp.getVideosApiProjectProjectSlugVideosGet(projectSlug, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Root
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        rootGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+            return localVarFp.rootGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Serve React App
+         * @param {string} filepath 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        serveReactAppFilepathGet(filepath: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+            return localVarFp.serveReactAppFilepathGet(filepath, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -553,8 +785,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug: string, videoSlug: string, segment: Array<Segment>, options?: RawAxiosRequestConfig): AxiosPromise<Video> {
-            return localVarFp.setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug, videoSlug, segment, options).then((request) => request(axios, basePath));
+        setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug: string, videoSlug: string, segment: Array<Segment>, options?: RawAxiosRequestConfig): AxiosPromise<Video> {
+            return localVarFp.setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug, videoSlug, segment, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -574,8 +806,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getProjectProjectProjectSlugGet(projectSlug: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getProjectProjectProjectSlugGet(projectSlug, options).then((request) => request(this.axios, this.basePath));
+    public getProjectApiProjectProjectSlugGet(projectSlug: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getProjectApiProjectProjectSlugGet(projectSlug, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -585,8 +817,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getProjectsProjectsGet(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getProjectsProjectsGet(options).then((request) => request(this.axios, this.basePath));
+    public getProjectsApiProjectsGet(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getProjectsApiProjectsGet(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -598,8 +830,21 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getVideoProjectProjectSlugVideoVideoSlugGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getVideoProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug, options).then((request) => request(this.axios, this.basePath));
+    public getVideoApiProjectProjectSlugVideoVideoSlugGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getVideoApiProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Video Preview
+     * @param {string} projectSlug 
+     * @param {string} videoSlug 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet(projectSlug, videoSlug, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -611,8 +856,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet(projectSlug, videoSlug, options).then((request) => request(this.axios, this.basePath));
+    public getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet(projectSlug: string, videoSlug: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet(projectSlug, videoSlug, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -623,8 +868,31 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getVideosProjectProjectSlugVideosGet(projectSlug: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getVideosProjectProjectSlugVideosGet(projectSlug, options).then((request) => request(this.axios, this.basePath));
+    public getVideosApiProjectProjectSlugVideosGet(projectSlug: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getVideosApiProjectProjectSlugVideosGet(projectSlug, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Root
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public rootGet(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).rootGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Serve React App
+     * @param {string} filepath 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public serveReactAppFilepathGet(filepath: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).serveReactAppFilepathGet(filepath, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -637,8 +905,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug: string, videoSlug: string, segment: Array<Segment>, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug, videoSlug, segment, options).then((request) => request(this.axios, this.basePath));
+    public setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug: string, videoSlug: string, segment: Array<Segment>, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost(projectSlug, videoSlug, segment, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

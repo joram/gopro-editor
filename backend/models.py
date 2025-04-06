@@ -103,6 +103,7 @@ class Video(BaseModel):
         segments_filename = get_filename_from_uid(uid, segments_filenames)
 
         segments = []
+        interest_levels = []
         if segments_filename is not None:
             segments_filepath = os.path.join("./projects/", os.path.join(project_dir_name, segments_filename))
 
@@ -112,10 +113,9 @@ class Video(BaseModel):
                     segments_json = json.loads(content)
                     segments = [Segment(**segment) for segment in segments_json["segments"]]
                     interest_levels = [InterestLevel(**segment) for segment in segments_json.get("interest_levels", [])]
-
         size_bytes, duration = get_metadata(project_dir_name, mp4_filename)
 
-        return Video(
+        video = Video(
             project_dir_name=project_dir_name,
             slug=uid,
             mp4_filename=mp4_filename,
@@ -130,34 +130,42 @@ class Video(BaseModel):
             length=duration,
             size_bytes=size_bytes,
         )
+        if len(interest_levels) == 0:
+            video.calculate_suggested_segments()
 
+        return video
     def calculate_telemetry(self):
+        if self.accel_filename is None:
+            self.accel_filename = self.mp4_filename.replace(".MP4", ".accel.json")
+        if self.gyro_filename is None:
+            self.gyro_filename = self.mp4_filename.replace(".MP4", ".gyro.json")
         accel_filepath = os.path.join("./projects/", os.path.join(self.project_dir_name, self.accel_filename))
         gyro_filepath = os.path.join("./projects/", os.path.join(self.project_dir_name, self.gyro_filename))
 
-        with open(accel_filepath, "r") as f:
-            content = f.read()
-            if content:
-                self.accel = json.loads(content)
-            else:
-                self.accel = []
+        self.accel = []
+        if os.path.exists(accel_filepath):
+            with open(accel_filepath, "r") as f:
+                content = f.read()
+                if content:
+                    self.accel = json.loads(content)
 
-        with open(gyro_filepath, "r") as f:
-            content = f.read()
-            if content:
-                self.gyro = json.loads(content)
-            else:
-                self.gyro = []
+        self.gyro = []
+        if os.path.exists(gyro_filepath):
+            with open(gyro_filepath, "r") as f:
+                content = f.read()
+                if content:
+                    self.gyro = json.loads(content)
 
-        telemetry = get_telemetry(self.project_dir_name, self.mp4_filename)
-        self.accel = telemetry.accel
-        self.gyro = telemetry.gyro
+        if len(self.accel) == 0:
+            telemetry = get_telemetry(self.project_dir_name, self.mp4_filename)
+            self.accel = telemetry.accel
+            self.gyro = telemetry.gyro
 
-        with open(accel_filepath, "w") as f:
-            f.write(json.dumps(telemetry.accel, indent=4))
+            with open(accel_filepath, "w") as f:
+                f.write(json.dumps(telemetry.accel, indent=4))
 
-        with open(gyro_filepath, "w") as f:
-            f.write(json.dumps(telemetry.gyro, indent=4))
+            with open(gyro_filepath, "w") as f:
+                f.write(json.dumps(telemetry.gyro, indent=4))
 
     def shrink_interest_levels_resolution(self):
         if type(self.interest_levels[0].timestamp == int):

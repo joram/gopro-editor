@@ -1,3 +1,5 @@
 .idea
 __pycache__
 projects
+/static/assets/
+/static/index.html

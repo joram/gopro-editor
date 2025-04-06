@@ -37,14 +37,21 @@ class CORPStaticFiles(StaticFiles):
         return response
 
 # Then mount using the custom class
-app.mount("/static", CORPStaticFiles(directory="projects"), name="static")
+app.mount("/static/projects", CORPStaticFiles(directory="projects"), name="projects")
+app.mount("/assets/", StaticFiles(directory="static/assets"), name="assets")
 
-@app.get("/projects")
+
+@app.get("/")
+async def root():
+    return RedirectResponse(url="/projects")
+
+
+@app.get("/api/projects")
 async def get_projects() -> list[Project]:
     return get_all_projects()
 
 
-@app.get("/project/{project_slug}")
+@app.get("/api/project/{project_slug}")
 async def get_project(project_slug: str) -> Project:
     project = get_p(project_slug)
 
@@ -53,7 +60,7 @@ async def get_project(project_slug: str) -> Project:
     return project
 
 
-@app.get("/project/{project_slug}/videos")
+@app.get("/api/project/{project_slug}/videos")
 async def get_videos(project_slug: str) -> List[Video]:
     project = get_p(project_slug)
     if project is None:
@@ -61,7 +68,7 @@ async def get_videos(project_slug: str) -> List[Video]:
     return project.videos
 
 
-@app.get("/project/{project_slug}/video/{video_slug}")
+@app.get("/api/project/{project_slug}/video/{video_slug}")
 async def get_video(project_slug: str, video_slug: str) -> Video:
     project = get_p(project_slug)
     if project is None:
@@ -74,7 +81,7 @@ async def get_video(project_slug: str, video_slug: str) -> Video:
 
 
 
-@app.post("/project/{project_slug}/video/{video_slug}/segments")
+@app.post("/api/project/{project_slug}/video/{video_slug}/segments")
 async def set_video_segments(
     project_slug: str, video_slug: str, segments: List[Segment]
 ) -> Video:
@@ -90,7 +97,7 @@ async def set_video_segments(
     raise HTTPException(status_code=404, detail="Video not found")
 
 
-@app.get("/project/{project_slug}/video/{video_slug}/thumbnail")
+@app.get("/api/project/{project_slug}/video/{video_slug}/thumbnail")
 async def get_video_segments(project_slug: str, video_slug: str) -> FileResponse:
     project = get_p(project_slug)
     if project is None:
@@ -112,7 +119,7 @@ async def get_video_segments(project_slug: str, video_slug: str) -> FileResponse
     raise HTTPException(status_code=404, detail="Video not found")
 
 
-@app.get("/project/{project_slug}/video/{video_slug}/preview")
+@app.get("/api/project/{project_slug}/video/{video_slug}/preview")
 async def get_video_preview(project_slug: str, video_slug: str) -> RedirectResponse:
     project = get_p(project_slug)
     for video in project.videos:
@@ -125,3 +132,10 @@ async def get_video_preview(project_slug: str, video_slug: str) -> RedirectRespo
                         "Cross-Origin-Resource-Policy": "cross-origin",
                     }
                 )
+
+
+@app.get("/{filepath:path}")
+async def serve_react_app(filepath: str, request: Request):
+    index_path = os.path.join("static", "index.html")
+    return FileResponse(index_path)
+

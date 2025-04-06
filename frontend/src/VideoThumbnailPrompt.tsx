@@ -1,5 +1,6 @@
+// @ts-ignore
 import React from "react";
-import {Types} from "./types.d.ts";
+import {Types} from "./types.ts";
 
 type ThumbnailProps = {
     status: string;

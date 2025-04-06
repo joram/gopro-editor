@@ -17,7 +17,8 @@ function secondsToHMS(seconds: number) {
 }
 
 function ProjectsList() {
-    let [projects, setProjects] = React.useState(null);
+    // @ts-ignore
+    const [projects, setProjects]: [Project[], any] = React.useState(null);
 
     useEffect(() => {
         apiClient.getProjects().then(response => {
@@ -44,7 +45,7 @@ function ProjectPage() {
     const params = useParams();
     const projectSlug = params.projectSlug;
 
-    let [project, setProject] = React.useState(null);
+    let [project, setProject]: [any, any] = React.useState(null);
 
     useEffect(() => {
         if (!projectSlug) {
@@ -110,7 +111,7 @@ function VideoPage() {
     const params = useParams();
     const projectSlug = params.projectSlug;
     const videoSlug = params.videoSlug;
-    let [video, setVideo] = React.useState(null);
+    let [video, setVideo]: [any, any] = React.useState(null);
 
     useEffect(() => {
         if (!projectSlug || !videoSlug) {
@@ -135,6 +136,7 @@ function App() {
     return <BrowserRouter>
         <Routes>
             <Route path="/" element={<ProjectsList />} />
+            <Route path="/projects" element={<ProjectsList />} />
             <Route path="/project/:projectSlug" element={<ProjectPage />} />
             <Route path="/project/:projectSlug/video/:videoSlug" element={<VideoPage />} />
         </Routes>

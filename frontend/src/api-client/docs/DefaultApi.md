@@ -4,15 +4,18 @@ All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**getProjectProjectProjectSlugGet**](#getprojectprojectprojectslugget) | **GET** /project/{project_slug} | Get Project|
-|[**getProjectsProjectsGet**](#getprojectsprojectsget) | **GET** /projects | Get Projects|
-|[**getVideoProjectProjectSlugVideoVideoSlugGet**](#getvideoprojectprojectslugvideovideoslugget) | **GET** /project/{project_slug}/video/{video_slug} | Get Video|
-|[**getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet**](#getvideosegmentsprojectprojectslugvideovideoslugsegmentsget) | **GET** /project/{project_slug}/video/{video_slug}/segments | Get Video Segments|
-|[**getVideosProjectProjectSlugVideosGet**](#getvideosprojectprojectslugvideosget) | **GET** /project/{project_slug}/videos | Get Videos|
-|[**setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost**](#setvideosegmentsprojectprojectslugvideovideoslugsegmentspost) | **POST** /project/{project_slug}/video/{video_slug}/segments | Set Video Segments|
+|[**getProjectApiProjectProjectSlugGet**](#getprojectapiprojectprojectslugget) | **GET** /api/project/{project_slug} | Get Project|
+|[**getProjectsApiProjectsGet**](#getprojectsapiprojectsget) | **GET** /api/projects | Get Projects|
+|[**getVideoApiProjectProjectSlugVideoVideoSlugGet**](#getvideoapiprojectprojectslugvideovideoslugget) | **GET** /api/project/{project_slug}/video/{video_slug} | Get Video|
+|[**getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet**](#getvideopreviewapiprojectprojectslugvideovideoslugpreviewget) | **GET** /api/project/{project_slug}/video/{video_slug}/preview | Get Video Preview|
+|[**getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet**](#getvideosegmentsapiprojectprojectslugvideovideoslugthumbnailget) | **GET** /api/project/{project_slug}/video/{video_slug}/thumbnail | Get Video Segments|
+|[**getVideosApiProjectProjectSlugVideosGet**](#getvideosapiprojectprojectslugvideosget) | **GET** /api/project/{project_slug}/videos | Get Videos|
+|[**rootGet**](#rootget) | **GET** / | Root|
+|[**serveReactAppFilepathGet**](#servereactappfilepathget) | **GET** /{filepath} | Serve React App|
+|[**setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost**](#setvideosegmentsapiprojectprojectslugvideovideoslugsegmentspost) | **POST** /api/project/{project_slug}/video/{video_slug}/segments | Set Video Segments|
 
-# **getProjectProjectProjectSlugGet**
-> Project getProjectProjectProjectSlugGet()
+# **getProjectApiProjectProjectSlugGet**
+> Project getProjectApiProjectProjectSlugGet()
 
 
 ### Example
@@ -28,7 +31,7 @@ const apiInstance = new DefaultApi(configuration);
 
 let projectSlug: string; // (default to undefined)
 
-const { status, data } = await apiInstance.getProjectProjectProjectSlugGet(
+const { status, data } = await apiInstance.getProjectApiProjectProjectSlugGet(
     projectSlug
 );
 ```
@@ -62,8 +65,8 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getProjectsProjectsGet**
-> Array<Project> getProjectsProjectsGet()
+# **getProjectsApiProjectsGet**
+> Array<Project> getProjectsApiProjectsGet()
 
 
 ### Example
@@ -77,7 +80,7 @@ import {
 const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
-const { status, data } = await apiInstance.getProjectsProjectsGet();
+const { status, data } = await apiInstance.getProjectsApiProjectsGet();
 ```
 
 ### Parameters
@@ -105,8 +108,8 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getVideoProjectProjectSlugVideoVideoSlugGet**
-> Video getVideoProjectProjectSlugVideoVideoSlugGet()
+# **getVideoApiProjectProjectSlugVideoVideoSlugGet**
+> Video getVideoApiProjectProjectSlugVideoVideoSlugGet()
 
 
 ### Example
@@ -123,7 +126,7 @@ const apiInstance = new DefaultApi(configuration);
 let projectSlug: string; // (default to undefined)
 let videoSlug: string; // (default to undefined)
 
-const { status, data } = await apiInstance.getVideoProjectProjectSlugVideoVideoSlugGet(
+const { status, data } = await apiInstance.getVideoApiProjectProjectSlugVideoVideoSlugGet(
     projectSlug,
     videoSlug
 );
@@ -159,8 +162,8 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet**
-> Array<Segment> getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet()
+# **getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet**
+> any getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet()
 
 
 ### Example
@@ -177,7 +180,7 @@ const apiInstance = new DefaultApi(configuration);
 let projectSlug: string; // (default to undefined)
 let videoSlug: string; // (default to undefined)
 
-const { status, data } = await apiInstance.getVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsGet(
+const { status, data } = await apiInstance.getVideoPreviewApiProjectProjectSlugVideoVideoSlugPreviewGet(
     projectSlug,
     videoSlug
 );
@@ -193,7 +196,7 @@ const { status, data } = await apiInstance.getVideoSegmentsProjectProjectSlugVid
 
 ### Return type
 
-**Array<Segment>**
+**any**
 
 ### Authorization
 
@@ -213,8 +216,62 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getVideosProjectProjectSlugVideosGet**
-> Array<Video> getVideosProjectProjectSlugVideosGet()
+# **getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet**
+> any getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet()
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let projectSlug: string; // (default to undefined)
+let videoSlug: string; // (default to undefined)
+
+const { status, data } = await apiInstance.getVideoSegmentsApiProjectProjectSlugVideoVideoSlugThumbnailGet(
+    projectSlug,
+    videoSlug
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **projectSlug** | [**string**] |  | defaults to undefined|
+| **videoSlug** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**any**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Successful Response |  -  |
+|**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getVideosApiProjectProjectSlugVideosGet**
+> Array<Video> getVideosApiProjectProjectSlugVideosGet()
 
 
 ### Example
@@ -230,7 +287,7 @@ const apiInstance = new DefaultApi(configuration);
 
 let projectSlug: string; // (default to undefined)
 
-const { status, data } = await apiInstance.getVideosProjectProjectSlugVideosGet(
+const { status, data } = await apiInstance.getVideosApiProjectProjectSlugVideosGet(
     projectSlug
 );
 ```
@@ -264,8 +321,102 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost**
-> Video setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost(segment)
+# **rootGet**
+> any rootGet()
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+const { status, data } = await apiInstance.rootGet();
+```
+
+### Parameters
+This endpoint does not have any parameters.
+
+
+### Return type
+
+**any**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Successful Response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **serveReactAppFilepathGet**
+> any serveReactAppFilepathGet()
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let filepath: string; // (default to undefined)
+
+const { status, data } = await apiInstance.serveReactAppFilepathGet(
+    filepath
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **filepath** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**any**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Successful Response |  -  |
+|**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost**
+> Video setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost(segment)
 
 
 ### Example
@@ -283,7 +434,7 @@ let projectSlug: string; // (default to undefined)
 let videoSlug: string; // (default to undefined)
 let segment: Array<Segment>; //
 
-const { status, data } = await apiInstance.setVideoSegmentsProjectProjectSlugVideoVideoSlugSegmentsPost(
+const { status, data } = await apiInstance.setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost(
     projectSlug,
     videoSlug,
     segment
