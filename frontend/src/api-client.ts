@@ -1,4 +1,4 @@
-import {DefaultApi, Segment} from "./api-client/api";
+import {DefaultApi} from "./api-client/api";
 import * as axios from "axios";
 
 class ApiClient {
@@ -54,7 +54,14 @@ class ApiClient {
         return this._apiClient.getVideoApiProjectProjectSlugVideoVideoSlugGet(projectSlug, videoSlug);
     }
 
-    setSegments(projectSlug: string, videoSlug: string, segments: Array<Segment>) {
+    buildFinalCut(projectSlug: string) {
+        if (!this._apiClient) {
+            throw new Error("API client not initialized");
+        }
+        return this._apiClient.buildFinalCutApiProjectProjectSlugFinalGet(projectSlug)
+    }
+
+    setSegments(projectSlug: string, videoSlug: string, segments: Array<any>) {
         if (!this._apiClient) {
             throw new Error("API client not initialized");
         }

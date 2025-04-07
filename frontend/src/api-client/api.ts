@@ -237,6 +237,74 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
+         * @summary Build Final Cut
+         * @param {string} projectSlug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        buildFinalCutApiProjectProjectSlugFinalGet: async (projectSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectSlug' is not null or undefined
+            assertParamExists('buildFinalCutApiProjectProjectSlugFinalGet', 'projectSlug', projectSlug)
+            const localVarPath = `/api/project/{project_slug}/final`
+                .replace(`{${"project_slug"}}`, encodeURIComponent(String(projectSlug)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Project
+         * @param {string} projectSlug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProjectApiProjectProjectSlugCalculateGet: async (projectSlug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectSlug' is not null or undefined
+            assertParamExists('getProjectApiProjectProjectSlugCalculateGet', 'projectSlug', projectSlug)
+            const localVarPath = `/api/project/{project_slug}/calculate`
+                .replace(`{${"project_slug"}}`, encodeURIComponent(String(projectSlug)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get Project
          * @param {string} projectSlug 
          * @param {*} [options] Override http request option.
@@ -567,6 +635,32 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Build Final Cut
+         * @param {string} projectSlug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async buildFinalCutApiProjectProjectSlugFinalGet(projectSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.buildFinalCutApiProjectProjectSlugFinalGet(projectSlug, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.buildFinalCutApiProjectProjectSlugFinalGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get Project
+         * @param {string} projectSlug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getProjectApiProjectProjectSlugCalculateGet(projectSlug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Project>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectApiProjectProjectSlugCalculateGet(projectSlug, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getProjectApiProjectProjectSlugCalculateGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Get Project
          * @param {string} projectSlug 
          * @param {*} [options] Override http request option.
@@ -697,6 +791,26 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @summary Build Final Cut
+         * @param {string} projectSlug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        buildFinalCutApiProjectProjectSlugFinalGet(projectSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+            return localVarFp.buildFinalCutApiProjectProjectSlugFinalGet(projectSlug, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Project
+         * @param {string} projectSlug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProjectApiProjectProjectSlugCalculateGet(projectSlug: string, options?: RawAxiosRequestConfig): AxiosPromise<Project> {
+            return localVarFp.getProjectApiProjectProjectSlugCalculateGet(projectSlug, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get Project
          * @param {string} projectSlug 
          * @param {*} [options] Override http request option.
@@ -798,6 +912,30 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @summary Build Final Cut
+     * @param {string} projectSlug 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public buildFinalCutApiProjectProjectSlugFinalGet(projectSlug: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).buildFinalCutApiProjectProjectSlugFinalGet(projectSlug, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Project
+     * @param {string} projectSlug 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getProjectApiProjectProjectSlugCalculateGet(projectSlug: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getProjectApiProjectProjectSlugCalculateGet(projectSlug, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Get Project

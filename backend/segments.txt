@@ -1,0 +1,2 @@
+file './projects/Garibaldi Neve Traverse/segments/GX010210_segment_0_90.MP4'
+file './projects/Garibaldi Neve Traverse/segments/GX010210_segment_94_146.MP4'

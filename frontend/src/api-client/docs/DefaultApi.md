@@ -4,6 +4,8 @@ All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
+|[**buildFinalCutApiProjectProjectSlugFinalGet**](#buildfinalcutapiprojectprojectslugfinalget) | **GET** /api/project/{project_slug}/final | Build Final Cut|
+|[**getProjectApiProjectProjectSlugCalculateGet**](#getprojectapiprojectprojectslugcalculateget) | **GET** /api/project/{project_slug}/calculate | Get Project|
 |[**getProjectApiProjectProjectSlugGet**](#getprojectapiprojectprojectslugget) | **GET** /api/project/{project_slug} | Get Project|
 |[**getProjectsApiProjectsGet**](#getprojectsapiprojectsget) | **GET** /api/projects | Get Projects|
 |[**getVideoApiProjectProjectSlugVideoVideoSlugGet**](#getvideoapiprojectprojectslugvideovideoslugget) | **GET** /api/project/{project_slug}/video/{video_slug} | Get Video|
@@ -13,6 +15,108 @@ All URIs are relative to *http://localhost*
 |[**rootGet**](#rootget) | **GET** / | Root|
 |[**serveReactAppFilepathGet**](#servereactappfilepathget) | **GET** /{filepath} | Serve React App|
 |[**setVideoSegmentsApiProjectProjectSlugVideoVideoSlugSegmentsPost**](#setvideosegmentsapiprojectprojectslugvideovideoslugsegmentspost) | **POST** /api/project/{project_slug}/video/{video_slug}/segments | Set Video Segments|
+
+# **buildFinalCutApiProjectProjectSlugFinalGet**
+> any buildFinalCutApiProjectProjectSlugFinalGet()
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let projectSlug: string; // (default to undefined)
+
+const { status, data } = await apiInstance.buildFinalCutApiProjectProjectSlugFinalGet(
+    projectSlug
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **projectSlug** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**any**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Successful Response |  -  |
+|**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getProjectApiProjectProjectSlugCalculateGet**
+> Project getProjectApiProjectProjectSlugCalculateGet()
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let projectSlug: string; // (default to undefined)
+
+const { status, data } = await apiInstance.getProjectApiProjectProjectSlugCalculateGet(
+    projectSlug
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **projectSlug** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**Project**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Successful Response |  -  |
+|**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getProjectApiProjectProjectSlugGet**
 > Project getProjectApiProjectProjectSlugGet()

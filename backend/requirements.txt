@@ -7,3 +7,5 @@ git+https://github.com/urbste/py-gpmf-parser.git
 numpy
 ffmpeg-python
 sentry-sdk[fastapi]
+opencv-python
+scipy

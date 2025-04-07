@@ -11,6 +11,7 @@ from starlette.requests import Request
 from starlette.responses import FileResponse, RedirectResponse
 
 from models import get_all_projects, get_project as get_p, Project, Video, Segment
+from process_segments import process_videos
 
 sentry_sdk.init(
     dsn="https://e88a3329c652d147a4947c6eb3af0539@o4509101771259904.ingest.us.sentry.io/4509101773029376",
@@ -37,7 +38,7 @@ class CORPStaticFiles(StaticFiles):
         return response
 
 # Then mount using the custom class
-app.mount("/static/projects", CORPStaticFiles(directory="projects"), name="projects")
+app.mount("/static/projects/", StaticFiles(directory="projects"), name="projects")
 app.mount("/assets/", StaticFiles(directory="static/assets"), name="assets")
 
 
@@ -54,11 +55,19 @@ async def get_projects() -> list[Project]:
 @app.get("/api/project/{project_slug}")
 async def get_project(project_slug: str) -> Project:
     project = get_p(project_slug)
-
     if project is None:
         raise HTTPException(status_code=404, detail="Project not found")
     return project
 
+
+@app.get("/api/project/{project_slug}/calculate")
+async def get_project(project_slug: str) -> Project:
+    project = get_p(project_slug)
+    for video in project.videos:
+        video.calculate_suggested_segments()
+    if project is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return project
 
 @app.get("/api/project/{project_slug}/videos")
 async def get_videos(project_slug: str) -> List[Video]:
@@ -78,6 +87,16 @@ async def get_video(project_slug: str, video_slug: str) -> Video:
             video.calculate_suggested_segments()
             return video
     raise HTTPException(status_code=404, detail="Video not found")
+
+
+@app.get("/api/project/{project_slug}/final")
+async def build_final_cut(
+    project_slug: str
+) -> None:
+    project = get_p(project_slug)
+    if project is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+    process_videos(project.videos)
 
 
 
@@ -112,7 +131,7 @@ async def get_video_segments(project_slug: str, video_slug: str) -> FileResponse
                     headers={
                         "Content-Disposition": f"inline; filename={video.thumbnail_filename}",
                         "Cross-Origin-Embedder-Policy": "require-corp",
-                        "Cross-Origin-Resource-Policy": "cross-origin",
+                        "Cross-Origin-Resource-Policy": "*",
                     }
                 )
 
@@ -120,16 +139,19 @@ async def get_video_segments(project_slug: str, video_slug: str) -> FileResponse
 
 
 @app.get("/api/project/{project_slug}/video/{video_slug}/preview")
-async def get_video_preview(project_slug: str, video_slug: str) -> RedirectResponse:
+async def get_video_preview(project_slug: str, video_slug: str) -> FileResponse:
     project = get_p(project_slug)
     for video in project.videos:
         if video.slug == video_slug:
             if video.lrv_filename is not None:
-                return RedirectResponse(
-                    f"/static/{project.name}/{video.lrv_filename        }",
+                return FileResponse(
+                    os.path.join("./projects", project.name, video.lrv_filename),
+                    media_type="video/mp4",
+                    filename=video.lrv_filename,
                     headers={
+                        "Content-Disposition": f"inline; filename={video.lrv_filename}",
                         "Cross-Origin-Embedder-Policy": "require-corp",
-                        "Cross-Origin-Resource-Policy": "cross-origin",
+                        "Cross-Origin-Resource-Policy": "*",
                     }
                 )
 

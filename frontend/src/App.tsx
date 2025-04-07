@@ -52,7 +52,12 @@ function ProjectPage() {
             return;
         }
         apiClient.getProject(projectSlug).then(response => {
-            setProject(response.data);
+            console.log("Project: ", response.data);
+            const project = response.data;
+            project.videos = project.videos.sort((a,b)=> {
+                return a.mp4_filename.localeCompare(b.mp4_filename);
+            })
+            setProject(project);
         })
 
     }, []);
@@ -81,12 +86,12 @@ function ProjectPage() {
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Thumbnail</th>
                     <th>Num Segments ({totalSegments})</th>
                     <th>Segments Total Duration ({secondsToHMS(totalSegmentsDuration)})</th>
                     <th>Duration ({secondsToHMS(totalDuration)})</th>
                 </tr>
             </thead>
+            <tbody>
             {project.videos.map((video: any) => {
                 let videosSegmentsDurations = 0;
                 video.segments.forEach((segment: any) => {
@@ -94,15 +99,14 @@ function ProjectPage() {
                     videosSegmentsDurations += segment.end_time - segment.start_time;
                 })
 
-
                 return <tr key={video.slug}>
                     <td><a href={"/project/"+projectSlug+"/video/"+video.slug}>{video.mp4_filename}</a></td>
-                    <td><img src={"/project/"+projectSlug+"/video/"+video.slug+"/thumbnail"} alt="thumbnail" width="100"/></td>
                     <td>{video.segments.length}</td>
                     <td>{secondsToHMS(videosSegmentsDurations)}</td>
                     <td>{secondsToHMS(video.length)}</td>
                 </tr>
             })}
+            </tbody>
         </table>
     </>
 }
@@ -112,6 +116,7 @@ function VideoPage() {
     const projectSlug = params.projectSlug;
     const videoSlug = params.videoSlug;
     let [video, setVideo]: [any, any] = React.useState(null);
+    let [project, setProject]: [any, any] = React.useState(null);
 
     useEffect(() => {
         if (!projectSlug || !videoSlug) {
@@ -120,16 +125,48 @@ function VideoPage() {
         apiClient.getVideo(projectSlug, videoSlug).then(response => {
             setVideo(response.data);
         })
+        apiClient.getProject(projectSlug).then(response => {
+            const project = response.data;
+            project.videos = project.videos.sort((a,b)=> {
+                return a.mp4_filename.localeCompare(b.mp4_filename);
+            })
+            setProject(project);
+        })
+    }, [projectSlug, videoSlug]);
 
-    }, []);
-    if (!video) {
+    if (!video || !project) {
         return <div>Loading...</div>;
     }
-    console.log(video)
-    const url = `http://localhost:8000/project/${projectSlug}/video/${videoSlug}/preview`;
+
+    let baseURL = "http://localhost:8000";
+    // @ts-ignore
+    if (process.env.NODE_ENV === "production") {
+        baseURL = window.location.origin;
+    }
+    const url = `${baseURL}/static/projects/${video.project_dir_name}/${video.lrv_filename}`;
+
+    let previousButton = null;
+    let nextButton = null;
+    const   currentVideoIndex = project.videos.findIndex((v: any) => v.slug === videoSlug);
+    if (currentVideoIndex > 0) {
+        const previousVideo = project.videos[currentVideoIndex - 1];
+        previousButton = <a href={"/project/"+projectSlug+"/video/"+previousVideo.slug}>Previous: {previousVideo.mp4_filename}</a>
+    }
+    if (currentVideoIndex < project.videos.length - 1) {
+        const nextVideo = project.videos[currentVideoIndex + 1];
+        nextButton = <a href={"/project/"+projectSlug+"/video/"+nextVideo.slug}>Next: {nextVideo.mp4_filename}</a>
+    }
+
+
     return <div className="max-h-screen">
+        <div className="titleRow">
+            <div className="previousButton">{previousButton}</div>
+            <div className="title">{currentVideoIndex}/{project.videos.length} {video.mp4_filename}</div>
+            <div className="nextButton"> {nextButton}</div>
+        </div>
         <VideoWithInterestGraph videoUrl={url} interestData={video.interest_levels} suggestedSegments={video.suggested_segments}  projectSlug={projectSlug} videoSlug={videoSlug} />
         </div>
+
 }
 
 function App() {

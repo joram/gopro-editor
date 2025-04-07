@@ -130,10 +130,11 @@ class Video(BaseModel):
             length=duration,
             size_bytes=size_bytes,
         )
-        if len(interest_levels) == 0:
-            video.calculate_suggested_segments()
+        # if len(interest_levels) == 0:
+        #     video.calculate_suggested_segments()
 
         return video
+
     def calculate_telemetry(self):
         if self.accel_filename is None:
             self.accel_filename = self.mp4_filename.replace(".MP4", ".accel.json")
@@ -169,7 +170,6 @@ class Video(BaseModel):
 
     def shrink_interest_levels_resolution(self):
         if type(self.interest_levels[0].timestamp == int):
-            print("Already shrunk")
             return
 
         values = {}
@@ -196,8 +196,7 @@ class Video(BaseModel):
                     self.segments = [Segment(**segment) for segment in segments_json["segments"]]
                     self.suggested_segments = self.segments
                     self.interest_levels = [InterestLevel(**segment) for segment in segments_json.get("interest_levels", [])]
-                    if len(self.interest_levels) == 0:
-                        self.calculate_telemetry()
+                    return
 
         if len(self.interest_levels) == 0:
 

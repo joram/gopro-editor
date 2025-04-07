@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     CartesianGrid,
     Line,
@@ -61,12 +61,12 @@ function insertAndMergeSegment(
 }
 
 export const VideoWithInterestGraph: React.FC<Props> = ({
-    videoUrl,
-    interestData,
-    suggestedSegments = [],
-    projectSlug = "",
-    videoSlug = "",
-}) => {
+                                                            videoUrl,
+                                                            interestData,
+                                                            suggestedSegments = [],
+                                                            projectSlug = "",
+                                                            videoSlug = "",
+                                                        }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const chartRef = useRef<any>(null);
     const [currentTime, setCurrentTime] = useState(0);
@@ -74,11 +74,13 @@ export const VideoWithInterestGraph: React.FC<Props> = ({
     const [draftStart, setDraftStart] = useState<number | null>(null);
     const [contextMenu, setContextMenu] = useState<{ x: number; y: number; segmentIndex: number } | null>(null);
     const [dragging, setDragging] = useState<{ segmentIndex: number; edge: 'start' | 'end' } | null>(null);
+    const [segmentMode, setSegmentMode] = useState(false);
 
     async function setAndSaveSegments(newSegments: Segment[]) {
         setSegments(newSegments);
         await apiClient.setSegments(projectSlug, videoSlug, newSegments);
     }
+
     useEffect(() => {
         const video = videoRef.current;
         const updateTime = () => setCurrentTime(video?.currentTime || 0);
@@ -97,7 +99,6 @@ export const VideoWithInterestGraph: React.FC<Props> = ({
             const mouseX = e.clientX - chartRect.left;
             const newTime = xScale.invert(mouseX);
 
-
             const updated = [...segments];
             const seg = { ...updated[dragging.segmentIndex] };
             if (dragging.edge === 'start') {
@@ -108,7 +109,6 @@ export const VideoWithInterestGraph: React.FC<Props> = ({
             const cleaned = [...updated.slice(0, dragging.segmentIndex), ...updated.slice(dragging.segmentIndex + 1)];
             const newSegments = insertAndMergeSegment(cleaned, seg);
             await setAndSaveSegments(newSegments);
-            return newSegments;
         };
 
         const stopDragging = () => setDragging(null);
@@ -153,6 +153,39 @@ export const VideoWithInterestGraph: React.FC<Props> = ({
         }
     };
 
+    function findCurrentSegmentIndex(time: number): number {
+        return segments.findIndex(
+            seg => time >= seg.start_time && time <= seg.end_time
+        );
+    }
+
+    useEffect(() => {
+        if (!segmentMode || !videoRef.current || segments.length === 0) return;
+
+        const currentSegmentIndex = findCurrentSegmentIndex(currentTime);
+
+        if (currentSegmentIndex === -1) {
+            const next = segments.find(seg => seg.start_time > currentTime);
+            if (next) {
+                videoRef.current.currentTime = next.start_time;
+                videoRef.current.play();
+            } else {
+                videoRef.current.pause();
+            }
+        } else {
+            const seg = segments[currentSegmentIndex];
+            if (currentTime > seg.end_time) {
+                const next = segments[currentSegmentIndex + 1];
+                if (next) {
+                    videoRef.current.currentTime = next.start_time;
+                    videoRef.current.play();
+                } else {
+                    videoRef.current.pause();
+                }
+            }
+        }
+    }, [currentTime, segmentMode, segments]);
+
     return (
         <div style={{ position: 'relative' }}>
             <video ref={videoRef} src={videoUrl} controls width="100%" />
@@ -179,7 +212,11 @@ export const VideoWithInterestGraph: React.FC<Props> = ({
                                     fill="rgba(0, 255, 0, 0.2)"
                                     onContextMenu={(e) => {
                                         e.preventDefault();
-                                        setContextMenu({ x: e.clientX, y: e.clientY, segmentIndex: index });
+                                        setContextMenu({
+                                            x: e.clientX,
+                                            y: e.clientY - 10,
+                                            segmentIndex: index
+                                        });
                                     }}
                                 />
                                 <ReferenceLine x={seg.start_time} stroke="green" strokeWidth={3} strokeDasharray="4 2" ifOverflow="extendDomain" />
@@ -237,6 +274,19 @@ export const VideoWithInterestGraph: React.FC<Props> = ({
                 })}
             </div>
 
+            {/* Segment-only toggle */}
+            <div style={{ marginTop: 10 }}>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={segmentMode}
+                        onChange={(e) => setSegmentMode(e.target.checked)}
+                    />{" "}
+                    Play only selected segments
+                </label>
+            </div>
+
+            {/* Context menu */}
             {contextMenu && (
                 <div
                     style={{
