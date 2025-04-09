@@ -3,3 +3,5 @@ __pycache__
 projects
 /static/assets/
 /static/index.html
+.venv
+venv

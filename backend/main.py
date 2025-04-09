@@ -3,15 +3,15 @@ from http.client import HTTPException
 from typing import List
 
 import sentry_sdk
-from fastapi import FastAPI
+from fastapi import FastAPI, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.models import Response
 from fastapi.staticfiles import StaticFiles
 from starlette.requests import Request
 from starlette.responses import FileResponse, RedirectResponse
 
+from merge_segments import make_final_cut
 from models import get_all_projects, get_project as get_p, Project, Video, Segment
-from process_segments import process_videos
 
 sentry_sdk.init(
     dsn="https://e88a3329c652d147a4947c6eb3af0539@o4509101771259904.ingest.us.sentry.io/4509101773029376",
@@ -91,13 +91,17 @@ async def get_video(project_slug: str, video_slug: str) -> Video:
 
 @app.get("/api/project/{project_slug}/final")
 async def build_final_cut(
-    project_slug: str
+    project_slug: str,
+    background_tasks: BackgroundTasks,
 ) -> None:
+    print("Building final cut...")
     project = get_p(project_slug)
     if project is None:
-        raise HTTPException(status_code=404, detail="Project not found")
-    process_videos(project.videos)
+        raise HTTPException()
 
+
+    make_final_cut(project)
+    print("Processed videos...")
 
 
 @app.post("/api/project/{project_slug}/video/{video_slug}/segments")

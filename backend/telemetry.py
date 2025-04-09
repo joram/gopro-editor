@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 from py_gpmf_parser import GoProTelemetryExtractor
 from pydantic import BaseModel
@@ -7,10 +8,12 @@ from pydantic import BaseModel
 class Telemetry(BaseModel):
     gyro: list
     accel: list
+    raw_accel_data: list
+    raw_gyro_data: list
+    accel_timestamps: list
 
 
-def get_telemetry(project_name, mp4_filename) -> Telemetry:
-    filepath = os.path.join("./projects", project_name, mp4_filename)
+def get_telemetry(filepath) -> Telemetry:
     extractor = GoProTelemetryExtractor(filepath)
     extractor.open_source()
     [raw_accel_data, accel_timestamps] = extractor.extract_data('ACCL')
@@ -23,7 +26,7 @@ def get_telemetry(project_name, mp4_filename) -> Telemetry:
             "timestamp": timestamp,
             "x": data[0],
             "y": data[1],
-            "z": data[2]
+            "z": data[2],
         }
 
     accel = []
@@ -38,6 +41,6 @@ def get_telemetry(project_name, mp4_filename) -> Telemetry:
         gyro.append(convert_to_dict(data, gyro_timestamps[i]))
         i += 1
 
-    return Telemetry(accel=accel, gyro=gyro)
+    return Telemetry(accel=accel, gyro=gyro, raw_accel_data=raw_accel_data, raw_gyro_data=raw_gyro_data, accel_timestamps=accel_timestamps)
 
 

@@ -1,2 +1,6 @@
 projects
 .venv
+venv
+__pycache__
+*.pyc
+.idea

@@ -18,6 +18,11 @@ class Segment(BaseModel):
     start_time: float
     end_time: float
 
+    def filepath(self, video: "Video"):
+        filename = f"{video.mp4_filename.replace('.MP4', '')}_segment_{int(self.start_time)}_{int(self.end_time)}.mp4"
+        return os.path.join("./projects", video.project_dir_name, "segments", filename)
+
+
 
 class InterestLevel(BaseModel):
     timestamp: float
@@ -158,7 +163,8 @@ class Video(BaseModel):
                     self.gyro = json.loads(content)
 
         if len(self.accel) == 0:
-            telemetry = get_telemetry(self.project_dir_name, self.mp4_filename)
+            filepath = os.path.join("./projects", self.project_dir_name, self.mp4_filename)
+            telemetry = get_telemetry(filepath)
             self.accel = telemetry.accel
             self.gyro = telemetry.gyro
 
@@ -316,7 +322,7 @@ class Video(BaseModel):
 
     def write_segments(self):
         if self.segments_filename is None:
-            raise ValueError("No segments filename provided")
+                raise ValueError("No segments filename provided")
 
         segments_filepath = os.path.join("./projects/", self.project_dir_name, self.segments_filename)
         with open(segments_filepath, "w") as f:
@@ -327,6 +333,7 @@ class Video(BaseModel):
             f.write(json.dumps(segments_json, indent=4))
         print(f"Wrote {len(self.segments)} segments to", segments_filepath)
 
+
 class Project(BaseModel):
     name: str
     slug: str
@@ -334,8 +341,12 @@ class Project(BaseModel):
 
 
 
-
+CACHED_PROJECTS = None
 def get_all_projects():
+    global CACHED_PROJECTS
+    if CACHED_PROJECTS is not None:
+        return CACHED_PROJECTS
+
     projects = []
     for project_name in os.listdir("projects"):
         if os.path.isdir(os.path.join("projects", project_name)):
@@ -352,6 +363,8 @@ def get_all_projects():
                 #     video.calculate_telemetry()
                 project.videos.append(video)
             projects.append(project)
+
+    CACHED_PROJECTS = projects
     return projects
 
 def get_project(project_slug):
